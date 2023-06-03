@@ -27,4 +27,8 @@ export class AuthComponent {
   changePanelActivity() {
     this.isRightPanelActive = !this.isRightPanelActive;
   }
+
+  get username() {
+    return this.registerForm.get('username');
+  }
 }

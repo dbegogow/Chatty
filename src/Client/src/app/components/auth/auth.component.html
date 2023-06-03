@@ -2,6 +2,8 @@
     <div class="form-container sign-up-container">
         <form [formGroup]="registerForm" (ngSubmit)="register()" >
             <h1>Create Account</h1>
+            <app-form-error-message *ngIf="username?.errors"
+                [message]="'Username is required and need to be between 3 and 20 symbols'" />
             <input type="text" formControlName="username" placeholder="Username" />
             <input type="email" formControlName="email" placeholder="Email" />
             <input type="password" formControlName="password" placeholder="Password" />

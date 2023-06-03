@@ -1,0 +1,13 @@
+.container {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #585858;
+    display: flex;
+    text-align: start;
+}
+
+.container .material-symbols-outlined {
+    font-size: 20px;
+    margin-right: 5px;
+    color: #CF1616;
+}
