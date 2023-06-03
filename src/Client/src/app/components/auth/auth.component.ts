@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AuthComponent {
   isRightPanelActive: boolean = false;
+  isRegisterFormSubmitted: boolean = false;
 
   registerForm = this.fb.group({
     username: ['', Validators.required, Validators.minLength(3), Validators.maxLength(20)],
@@ -21,6 +22,12 @@ export class AuthComponent {
     private toastr: ToastrService) { }
 
   register() {
+    this.isRegisterFormSubmitted = true;
+
+    if (!this.registerForm.valid) {
+      return;
+    }
+
     this.toastr.error('An error occured! Please try again', 'Error');
   }
 
@@ -30,5 +37,13 @@ export class AuthComponent {
 
   get username() {
     return this.registerForm.get('username');
+  }
+
+  get email() {
+    return this.registerForm.get('email');
+  }
+
+  get password() {
+    return this.registerForm.get('password');
   }
 }

@@ -2,10 +2,14 @@
     <div class="form-container sign-up-container">
         <form [formGroup]="registerForm" (ngSubmit)="register()" >
             <h1>Create Account</h1>
-            <app-form-error-message *ngIf="username?.errors"
+            <app-form-error-message *ngIf="isRegisterFormSubmitted && username?.errors"
                 [message]="'Username is required and need to be between 3 and 20 symbols'" />
             <input type="text" formControlName="username" placeholder="Username" />
+            <app-form-error-message *ngIf="isRegisterFormSubmitted && email?.errors"
+                [message]="'Valid email address is required'" />
             <input type="email" formControlName="email" placeholder="Email" />
+            <app-form-error-message *ngIf="isRegisterFormSubmitted && password?.errors"
+                [message]="'Password is required and needs to be at a minimum with 6 symbols'" />
             <input type="password" formControlName="password" placeholder="Password" />
             <button>Sign Up</button>
         </form>
