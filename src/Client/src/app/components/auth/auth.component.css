@@ -15,6 +15,7 @@ a {
 	font-size: 14px;
 	text-decoration: none;
 	margin: 15px 0;
+	cursor: pointer;
 }
 
 button {
@@ -28,6 +29,7 @@ button {
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
+	cursor: pointer;
 }
 
 button:active {
@@ -79,6 +81,10 @@ input {
 	top: 0;
 	height: 100%;
 	transition: all 0.6s ease-in-out;
+}
+
+.form-container .error-message-container {
+	width: 100%;
 }
 
 .sign-in-container {

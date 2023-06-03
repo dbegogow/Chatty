@@ -1,25 +1,35 @@
 <div [ngClass]="{'container': true, 'right-panel-active': isRightPanelActive}">
     <div class="form-container sign-up-container">
-        <form [formGroup]="registerForm" (ngSubmit)="register()" >
+        <form [formGroup]="registerForm" (ngSubmit)="register()">
             <h1>Create Account</h1>
-            <app-form-error-message *ngIf="isRegisterFormSubmitted && username?.errors"
-                [message]="'Username is required and need to be between 3 and 20 symbols'" />
+            <div class="error-message-container">
+                <app-form-error-message *ngIf="isRegisterFormSubmitted && registerUsername?.errors"
+                    [message]="'Username is required and need to be between 3 and 20 symbols'" />
+            </div>
             <input type="text" formControlName="username" placeholder="Username" />
-            <app-form-error-message *ngIf="isRegisterFormSubmitted && email?.errors"
-                [message]="'Valid email address is required'" />
+            <div class="error-message-container">
+                <app-form-error-message *ngIf="isRegisterFormSubmitted && registerEmail?.errors"
+                    [message]="'Valid email address is required'" />
+            </div>
             <input type="email" formControlName="email" placeholder="Email" />
-            <app-form-error-message *ngIf="isRegisterFormSubmitted && password?.errors"
-                [message]="'Password is required and needs to be at a minimum with 6 symbols'" />
+            <div class="error-message-container">
+                <app-form-error-message *ngIf="isRegisterFormSubmitted && registerPassword?.errors"
+                    [message]="'Password is required and needs to be at a minimum with 6 symbols'" />
+            </div>
             <input type="password" formControlName="password" placeholder="Password" />
             <button>Sign Up</button>
         </form>
     </div>
     <div class="form-container sign-in-container">
-        <form action="#">
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
             <h1>Sign in</h1>
-            <input type="email" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <a href="#">Forgot your password?</a>
+            <div class="error-message-container">
+                <app-form-error-message *ngIf="isloginFormSubmitted"
+                    [message]="'Ivalid email or password'" />
+            </div>
+            <input type="email" formControlName="email" placeholder="Email" />
+            <input type="password" formControlName="password" placeholder="Password" />
+            <a>Forgot your password?</a>
             <button>Sign In</button>
         </form>
     </div>

@@ -10,9 +10,15 @@ import { ToastrService } from 'ngx-toastr';
 export class AuthComponent {
   isRightPanelActive: boolean = false;
   isRegisterFormSubmitted: boolean = false;
+  isloginFormSubmitted: boolean = false;
 
   registerForm = this.fb.group({
     username: ['', Validators.required, Validators.minLength(3), Validators.maxLength(20)],
+    email: ['', Validators.required, Validators.email],
+    password: ['', Validators.required, Validators.minLength(6)]
+  });
+
+  loginForm = this.fb.group({
     email: ['', Validators.required, Validators.email],
     password: ['', Validators.required, Validators.minLength(6)]
   });
@@ -31,19 +37,37 @@ export class AuthComponent {
     this.toastr.error('An error occured! Please try again', 'Error');
   }
 
+  login() {
+    this.isloginFormSubmitted = true;
+
+    if (!this.loginForm.valid) {
+      return;
+    }
+
+    this.toastr.error('An error occured! Please try again', 'Error');
+  }
+
   changePanelActivity() {
     this.isRightPanelActive = !this.isRightPanelActive;
   }
 
-  get username() {
+  get registerUsername() {
     return this.registerForm.get('username');
   }
 
-  get email() {
+  get registerEmail() {
     return this.registerForm.get('email');
   }
 
-  get password() {
+  get registerPassword() {
     return this.registerForm.get('password');
+  }
+
+  get loginEmail() {
+    return this.loginForm.get('email');
+  }
+
+  get loginPassword() {
+    return this.loginForm.get('password');
   }
 }
