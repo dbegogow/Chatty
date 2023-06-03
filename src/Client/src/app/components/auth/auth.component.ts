@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth',
@@ -15,10 +16,12 @@ export class AuthComponent {
     password: ['', Validators.required, Validators.minLength(6)]
   });
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private toastr: ToastrService) { }
 
   register() {
-    console.log('register');
+    this.toastr.error('An error occured! Please try again', 'Error');
   }
 
   changePanelActivity() {

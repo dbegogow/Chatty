@@ -20,7 +20,10 @@ import { AuthComponent } from './components/auth/auth.component';
     AppRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-top-right'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
