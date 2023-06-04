@@ -6,6 +6,8 @@ var configuration = builder.Configuration;
 
 builder.Services
     .AddDatabase(configuration)
+    .AddIdentity()
+    .AddApplicationServices()
     .AddEndpointsApiExplorer()
     .AddSwaggerGen();
 
