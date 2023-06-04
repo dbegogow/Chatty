@@ -1,8 +1,13 @@
-﻿using Chatty.Server.Data;
+﻿using System.Text;
+
+using Chatty.Server.Data;
 using Chatty.Server.Data.Models;
 using Chatty.Server.Infrastructure.Services;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Chatty.Server.Infrastructure.Extensions;
 
@@ -13,7 +18,7 @@ public static class ServiceCollectionExtensions
             IConfiguration configuration)
             => services
                 .AddDbContext<AppDbContext>(options => options
-                    .UseSqlServer(configuration.GetDefaultConnectionString()));
+                    .UseSqlServer(configuration.GetDatabaseConfigurations().DefaultConnection));
 
     public static IServiceCollection AddIdentity(this IServiceCollection services)
     {
@@ -29,6 +34,36 @@ public static class ServiceCollectionExtensions
             .AddEntityFrameworkStores<AppDbContext>();
 
         return services;
+    }
+
+    public static IServiceCollection AddJwtAuthentication(
+            this IServiceCollection service,
+            IConfiguration configuration)
+    {
+        var jwtConfiguration = configuration.GetJwtConfigurations();
+
+        var key = Encoding.ASCII.GetBytes(jwtConfiguration.Secret);
+
+        service
+            .AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+        return service;
     }
 
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)

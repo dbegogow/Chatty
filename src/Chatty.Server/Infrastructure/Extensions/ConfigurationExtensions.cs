@@ -1,7 +1,12 @@
-﻿namespace Chatty.Server.Infrastructure.Extensions;
+﻿using Chatty.Server.Infrastructure.Configurations;
+
+namespace Chatty.Server.Infrastructure.Extensions;
 
 public static class ConfigurationExtensions
 {
-    public static string GetDefaultConnectionString(this IConfiguration configuration)
-            => configuration.GetConnectionString("DefaultConnection");
+    public static DatabaseConfig GetDatabaseConfigurations(this IConfiguration configuration)
+            => configuration.GetSection(nameof(DatabaseConfig)).Get<DatabaseConfig>();
+
+    public static JwtConfig GetJwtConfigurations(this IConfiguration configuration)
+            => configuration.GetSection(nameof(JwtConfig)).Get<JwtConfig>();
 }
