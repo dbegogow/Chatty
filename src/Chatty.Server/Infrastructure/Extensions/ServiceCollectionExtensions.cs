@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace Chatty.Server.Infrastructure.Extensions;
 
@@ -69,4 +70,42 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
             => services
                 .AddScoped<ICurrentUserService, CurrentUserService>();
+
+    public static IServiceCollection AddSwagger(this IServiceCollection services)
+        => services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc(
+                "v1",
+                new OpenApiInfo
+                {
+                    Title = "Chatty Server",
+                    Version = "v1"
+                });
+
+            c.AddSecurityDefinition(name: "Bearer", securityScheme: new OpenApiSecurityScheme
+            {
+                Name = "Authorization",
+                Description = "Enter the Bearer Authorization string as following: `Bearer Generated-JWT-Token`",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Name = "Bearer",
+                        In = ParameterLocation.Header,
+                        Reference = new OpenApiReference
+                        {
+                            Id = "Bearer",
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    },
+                    new List<string>()
+                }
+            });
+        });
 }

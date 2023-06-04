@@ -9,18 +9,18 @@ builder.Services
     .AddIdentity()
     .AddJwtAuthentication(configuration)
     .AddApplicationServices()
-    .AddEndpointsApiExplorer()
-    .AddSwaggerGen();
+    .AddSwagger();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app
-        .UseSwagger()
-        .UseSwaggerUI();
+    app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app
+    .UseHttpsRedirection()
+    .UseAuthentication()
+    .UseAuthorization();
 
 app.Run();
