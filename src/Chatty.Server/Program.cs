@@ -9,7 +9,10 @@ builder.Services
     .AddIdentity()
     .AddJwtAuthentication(configuration)
     .AddApplicationServices()
-    .AddSwagger();
+    .AddEndpointsApiExplorer()
+    .AddSwagger()
+    .AddAuthorization()
+    .AddAuthentication();
 
 var app = builder.Build();
 
@@ -20,6 +23,7 @@ if (app.Environment.IsDevelopment())
 
 app
     .UseHttpsRedirection()
+    .UseRouting()
     .UseAuthentication()
     .UseAuthorization();
 
