@@ -1,6 +1,9 @@
-﻿using Chatty.Server.Models.Request;
+﻿using Chatty.Server.Data.Models;
+using Chatty.Server.Models.Request;
+
 using FluentValidation;
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 
 namespace Chatty.Server.Endpoints;
 
@@ -10,6 +13,7 @@ public static class AuthEndpoints
         => builder.UseEndpoints(endpoints =>
         {
             endpoints.MapPost("api/register", async (
+                UserManager<User> userManager,
                 IValidator<RegisterRequestModel> validator,
                 RegisterRequestModel model) =>
             {
@@ -21,6 +25,16 @@ public static class AuthEndpoints
                 if (!validationResult.IsValid)
                     return Results.ValidationProblem(validationResult.ToDictionary());
 
+                var user = new User
+                {
+                    Email = model.Email,
+                    UserName = model.Username
+                };
+
+                var result = await userManager.CreateAsync(user, model.Password);
+
+                if (!result.Succeeded)
+                    return Results.BadRequest(result.Errors);
 
                 return Results.Ok();
             });

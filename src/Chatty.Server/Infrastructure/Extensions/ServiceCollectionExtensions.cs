@@ -30,6 +30,8 @@ public static class ServiceCollectionExtensions
         services
             .AddIdentity<User, IdentityRole>(options =>
             {
+                options.User.RequireUniqueEmail = true;
+
                 options.Password.RequiredLength = 6;
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
