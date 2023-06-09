@@ -3,6 +3,8 @@
 using Chatty.Server.Data;
 using Chatty.Server.Data.Models;
 using Chatty.Server.Infrastructure.Services;
+using Chatty.Server.Models.Request;
+using Chatty.Server.Models.Request.Validators;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -10,16 +12,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
+using FluentValidation;
+
 namespace Chatty.Server.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDatabase(
-            this IServiceCollection services,
-            IConfiguration configuration)
-            => services
-                .AddDbContext<AppDbContext>(options => options
-                    .UseSqlServer(configuration.GetDatabaseConfigurations().DefaultConnection));
+        this IServiceCollection services,
+        IConfiguration configuration)
+        => services
+            .AddDbContext<AppDbContext>(options => options
+                .UseSqlServer(configuration.GetDatabaseConfigurations().DefaultConnection));
 
     public static IServiceCollection AddIdentity(this IServiceCollection services)
     {
@@ -38,8 +42,8 @@ public static class ServiceCollectionExtensions
     }
 
     public static IServiceCollection AddJwtAuthentication(
-            this IServiceCollection service,
-            IConfiguration configuration)
+        this IServiceCollection service,
+        IConfiguration configuration)
     {
         var jwtConfiguration = configuration.GetJwtConfigurations();
 
@@ -68,8 +72,12 @@ public static class ServiceCollectionExtensions
     }
 
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-            => services
-                .AddScoped<ICurrentUserService, CurrentUserService>();
+        => services
+            .AddScoped<ICurrentUserService, CurrentUserService>();
+
+    public static IServiceCollection AddRequestModelsValidators(this IServiceCollection services)
+        => services
+            .AddScoped<IValidator<RegisterRequestModel>, RegisterRequestModelValidator>();
 
     public static IServiceCollection AddSwagger(this IServiceCollection services)
         => services.AddSwaggerGen(c =>
