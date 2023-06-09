@@ -1,9 +1,9 @@
 ﻿using Chatty.Server.Data.Models;
 using Chatty.Server.Models.Request;
 
-using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+
+using FluentValidation;
 
 namespace Chatty.Server.Endpoints;
 
