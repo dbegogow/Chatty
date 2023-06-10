@@ -11,12 +11,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { FormErrorMessageComponent } from './components/form-error-message/form-error-message.component';
+import { ChatsComponent } from './components/chats/chats.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
-    FormErrorMessageComponent
+    FormErrorMessageComponent,
+    ChatsComponent
   ],
   imports: [
     BrowserModule,
