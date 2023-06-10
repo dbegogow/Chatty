@@ -11,6 +11,7 @@ builder.Services
     .AddApplicationServices()
     .AddRequestModelsValidators()
     .AddEndpointsApiExplorer()
+    .AddCorsPolicy()
     .AddSwagger()
     .AddAuthorization()
     .AddAuthentication();
@@ -25,6 +26,7 @@ if (app.Environment.IsDevelopment())
 app
     .UseHttpsRedirection()
     .UseRouting()
+    .UseCors()
     .UseEndpoints()
     .UseAuthentication()
     .UseAuthorization();

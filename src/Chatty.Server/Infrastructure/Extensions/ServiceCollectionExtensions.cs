@@ -84,6 +84,14 @@ public static class ServiceCollectionExtensions
             .AddScoped<IValidator<RegisterRequestModel>, RegisterRequestModelValidator>()
             .AddScoped<IValidator<LoginRequestModel>, LoginRequestModelValidator>();
 
+    public static IServiceCollection AddCorsPolicy(this IServiceCollection services)
+        => services.AddCors(options =>
+            options.AddDefaultPolicy(policy =>
+                policy
+                    .WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()));
+
     public static IServiceCollection AddSwagger(this IServiceCollection services)
         => services.AddSwaggerGen(c =>
         {

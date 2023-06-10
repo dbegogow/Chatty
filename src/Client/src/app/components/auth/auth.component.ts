@@ -48,8 +48,12 @@ export class AuthComponent {
         next: res => {
           this.toastr.success('Register successfully');
         },
-        error: () => {
-          this.toastr.error('Error occure');
+        error: (errorRes) => {
+          errorRes.error.forEach((err: any, index: number) => {
+            setTimeout(() => {
+              this.toastr.error(err.description);
+            }, 500 * index);
+          });
         }
       });
   }
