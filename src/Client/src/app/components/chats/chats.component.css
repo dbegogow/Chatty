@@ -39,6 +39,7 @@
 
 .container .main {
     display: flex;
+    column-gap: 5px;
 }
 
 .container .main .chat-list {
@@ -77,6 +78,68 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
+}
+
+.container .main .open-chat {
+    max-height: 385px;
+    width: 522px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #B6B6B6;
+    border-radius: 7px;
+}
+
+.container .main .open-chat .messages {
+    height: 365px;
+    padding: 10px 15px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.container .main .open-chat .messages .message {
+    width: fit-content;
+    margin-right: 282px;
+    word-wrap: break-word;
+    border: 1px solid #5A5A5A;
+    padding: 5px 7px;
+    border-radius: 12px;
+    background: #FCFCFC;
+}
+
+.container .main .open-chat .messages .message .text {
+    width: fit-content;
+}
+
+.container .main .open-chat .messages .message.mine {
+    margin-left: 245px;
+    margin-right: 0;
+    width: fit-content;
+    align-self: flex-end;
+    background: #DFF1FF;
+}
+
+.container .main .open-chat .bar {
+    height: 40px;
+    border-top: 1px solid #000;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container .main .open-chat .bar input {
+    height: 100%;
+    border: none;
+    outline: none;
+    width: 460px;
+    border-right: 1px solid #B6B6B6;
+    padding-right: 7px;
+}
+
+.container .main .open-chat .bar .material-symbols-outlined {
+    font-size: 28px;
+    cursor: pointer;
 }
 
 ::-webkit-scrollbar {
