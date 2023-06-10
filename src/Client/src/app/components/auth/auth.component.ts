@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { RegisterModel } from 'src/app/models/request/register.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -36,7 +37,21 @@ export class AuthComponent {
       return;
     }
 
-    this.toastr.error('An error occured! Please try again', 'Error');
+    const user: RegisterModel = {
+      username: this.registerUsername?.value,
+      email: this.registerEmail?.value,
+      password: this.registerPassword?.value
+    };
+
+    this.authService.register(user)
+      .subscribe({
+        next: res => {
+          this.toastr.success('Register successfully');
+        },
+        error: () => {
+          this.toastr.error('Error occure');
+        }
+      });
   }
 
   login() {
