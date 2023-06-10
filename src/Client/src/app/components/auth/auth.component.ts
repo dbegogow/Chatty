@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -13,19 +14,20 @@ export class AuthComponent {
   isloginFormSubmitted: boolean = false;
 
   registerForm = this.fb.group({
-    username: ['', Validators.required, Validators.minLength(3), Validators.maxLength(20)],
-    email: ['', Validators.required, Validators.email],
-    password: ['', Validators.required, Validators.minLength(6)]
+    username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   loginForm = this.fb.group({
-    email: ['', Validators.required, Validators.email],
-    password: ['', Validators.required, Validators.minLength(6)]
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   constructor(
     private fb: FormBuilder,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private authService: AuthService) { }
 
   register() {
     this.isRegisterFormSubmitted = true;
