@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterModel } from 'src/app/models/request/register.model';
+import { LoginModel } from 'src/app/models/request/login.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -37,6 +38,8 @@ export class AuthComponent {
       return;
     }
 
+    this.isRegisterFormSubmitted = false;
+
     const user: RegisterModel = {
       username: this.registerUsername?.value,
       email: this.registerEmail?.value,
@@ -65,7 +68,22 @@ export class AuthComponent {
       return;
     }
 
-    this.toastr.error('An error occured! Please try again', 'Error');
+    this.isloginFormSubmitted = false;
+
+    const user: LoginModel = {
+      email: this.loginEmail?.value,
+      password: this.loginPassword?.value
+    };
+
+    this.authService.login(user)
+      .subscribe({
+        next: res => {
+          this.toastr.success('Login successfully');
+        },
+        error: () => {
+          this.isloginFormSubmitted = true;
+        }
+      });
   }
 
   changePanelActivity() {
