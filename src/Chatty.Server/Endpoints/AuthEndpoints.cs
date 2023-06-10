@@ -53,5 +53,44 @@ public static class AuthEndpoints
                     Token = token
                 });
             });
+
+            endpoints.MapPost("api/login", async (
+                UserManager<User> userManager,
+                IIdentityService identityService,
+                IValidator<LoginRequestModel> validator,
+                LoginRequestModel model) =>
+            {
+                if (model is null)
+                    return Results.BadRequest();
+
+                var validationResult = await validator.ValidateAsync(model);
+
+                if (!validationResult.IsValid)
+                    return Results.ValidationProblem(validationResult.ToDictionary());
+
+                var user = await userManager.FindByEmailAsync(model.Email);
+
+                if (user is null)
+                    return Results.Unauthorized();
+
+                var passwordValid = await userManager.CheckPasswordAsync(user, model.Password);
+
+                if (!passwordValid)
+                    return Results.Unauthorized();
+
+                var role = (await userManager
+                    .GetRolesAsync(user))
+                    .FirstOrDefault();
+
+                var token = identityService.GenerateJwtToken(
+                    user.Id,
+                    user.Email,
+                    role);
+
+                return Results.Ok(new IdentityResponseModel
+                {
+                    Token = token
+                });
+            });
         });
 }
