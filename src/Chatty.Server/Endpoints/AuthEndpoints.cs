@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 
 using FluentValidation;
 
+using static Chatty.Server.Infrastructure.Constants.RolesConstants;
+
 namespace Chatty.Server.Endpoints;
 
 public static class AuthEndpoints
@@ -35,6 +37,8 @@ public static class AuthEndpoints
 
                 if (!result.Succeeded)
                     return Results.BadRequest(result.Errors);
+
+                await userManager.AddToRoleAsync(user, UserRole);
 
                 return Results.Ok();
             });
