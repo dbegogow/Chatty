@@ -1,5 +1,7 @@
 ﻿using Chatty.Server.Data.Models;
+using Chatty.Server.Models.Response;
 using Chatty.Server.Models.Request;
+using Chatty.Server.Services.Identity;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -16,6 +18,7 @@ public static class AuthEndpoints
         {
             endpoints.MapPost("api/register", async (
                 UserManager<User> userManager,
+                IIdentityService identityService,
                 IValidator<RegisterRequestModel> validator,
                 RegisterRequestModel model) =>
             {
@@ -40,7 +43,15 @@ public static class AuthEndpoints
 
                 await userManager.AddToRoleAsync(user, UserRole);
 
-                return Results.Ok();
+                var token = identityService.GenerateJwtToken(
+                    user.Id,
+                    user.UserName,
+                    UserRole);
+
+                return Results.Ok(new IdentityResponseModel
+                {
+                    Token = token
+                });
             });
         });
 }
