@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ToastrModule } from 'ngx-toastr';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { environment } from '../environments/environment';
+
+import { AccessTokenInterceptor } from './services/interceptors/access-token.interceptor';
+import { ErrorInterceptor } from './services/interceptors/error.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -14,7 +18,6 @@ import { AppComponent } from './app.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { FormErrorMessageComponent } from './components/form-error-message/form-error-message.component';
 import { ChatsComponent } from './components/chats/chats.component';
-import { JwtModule } from '@auth0/angular-jwt';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -45,7 +48,18 @@ export function tokenGetter() {
       }
     })
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AccessTokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
