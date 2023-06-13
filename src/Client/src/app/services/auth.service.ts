@@ -24,11 +24,11 @@ export class AuthService {
   }
 
   saveToken(token: string) {
-    localStorage.setItem('token', token);
+    localStorage.setItem('access_token', token);
   }
 
   getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem('access_token');
   }
 
   isAuthenticated() {
