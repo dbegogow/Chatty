@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { RegisterModel } from 'src/app/models/request/register.model';
 import { LoginModel } from 'src/app/models/request/login.model';
@@ -13,7 +14,9 @@ import { AuthService } from 'src/app/services/auth.service';
 export class AuthComponent {
   isRightPanelActive: boolean = false;
   isRegisterFormSubmitted: boolean = false;
+  isRegisterFormLoading: boolean = false;
   isloginFormSubmitted: boolean = false;
+  isLoadingFormLoading: boolean = false;
 
   registerForm = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
@@ -28,17 +31,18 @@ export class AuthComponent {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private toastr: ToastrService,
     private authService: AuthService) { }
 
   register() {
     this.isRegisterFormSubmitted = true;
+    this.isRegisterFormLoading = true;
 
     if (!this.registerForm.valid) {
+      this.isRegisterFormLoading = false;
       return;
     }
-
-    this.isRegisterFormSubmitted = false;
 
     const user: RegisterModel = {
       username: this.registerUsername?.value,
@@ -49,7 +53,11 @@ export class AuthComponent {
     this.authService.register(user)
       .subscribe({
         next: res => {
-          this.toastr.success('Register successfully');
+          this.toastr.success('Registered successfully');
+
+          this.authService.saveToken(res.token);
+
+          this.router.navigate(['chats']);
         },
         error: (errorRes) => {
           errorRes.error.forEach((err: any, index: number) => {
@@ -57,7 +65,10 @@ export class AuthComponent {
               this.toastr.error(err.description);
             }, 500 * index);
           });
-        }
+        },
+      }).add(() => {
+        this.isRegisterFormSubmitted = false;
+        this.isRegisterFormLoading = false;
       });
   }
 

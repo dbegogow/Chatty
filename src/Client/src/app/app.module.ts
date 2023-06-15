@@ -18,6 +18,7 @@ import { AppComponent } from './app.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { FormErrorMessageComponent } from './components/form-error-message/form-error-message.component';
 import { ChatsComponent } from './components/chats/chats.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -29,7 +30,8 @@ export function tokenGetter() {
     AppComponent,
     AuthComponent,
     FormErrorMessageComponent,
-    ChatsComponent
+    ChatsComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
