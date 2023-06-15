@@ -1,8 +1,8 @@
 <div [ngClass]="{'container': true, 'right-panel-active': isRightPanelActive}">
-    <div *ngIf="isRegisterFormLoading" class="loader-container">
+    <div *ngIf="isFormLoading" class="loader-container">
         <app-loader></app-loader>
     </div>
-    <div *ngIf="!isRegisterFormLoading">
+    <div *ngIf="!isFormLoading">
         <div class="form-container sign-up-container">
             <form [formGroup]="registerForm" (ngSubmit)="register()">
                 <h1>Create Account</h1>

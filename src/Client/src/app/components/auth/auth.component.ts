@@ -14,9 +14,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class AuthComponent {
   isRightPanelActive: boolean = false;
   isRegisterFormSubmitted: boolean = false;
-  isRegisterFormLoading: boolean = false;
   isloginFormSubmitted: boolean = false;
-  isLoadingFormLoading: boolean = false;
+  isFormLoading: boolean = false;
 
   registerForm = this.fb.group({
     username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
@@ -37,10 +36,10 @@ export class AuthComponent {
 
   register() {
     this.isRegisterFormSubmitted = true;
-    this.isRegisterFormLoading = true;
+    this.isFormLoading = true;
 
     if (!this.registerForm.valid) {
-      this.isRegisterFormLoading = false;
+      this.isFormLoading = false;
       return;
     }
 
@@ -68,14 +67,16 @@ export class AuthComponent {
         },
       }).add(() => {
         this.isRegisterFormSubmitted = false;
-        this.isRegisterFormLoading = false;
+        this.isFormLoading = false;
       });
   }
 
   login() {
     this.isloginFormSubmitted = true;
+    this.isFormLoading = true;
 
     if (!this.loginForm.valid) {
+      this.isFormLoading = false;
       return;
     }
 
@@ -90,10 +91,16 @@ export class AuthComponent {
       .subscribe({
         next: res => {
           this.toastr.success('Login successfully');
+
+          this.authService.saveToken(res.token);
+
+          this.router.navigate(['chats']);
         },
         error: () => {
           this.isloginFormSubmitted = true;
-        }
+        },
+      }).add(() => {
+        this.isFormLoading = false;
       });
   }
 
