@@ -27,10 +27,12 @@
 
 .container .nav .material-symbols-outlined {
     font-size: 35px;
+    cursor: pointer;
 }
 
 .container .nav .material-symbols-outlined.forum {
     color: #FF416C;
+    cursor: context-menu;
 }
 
 .container .nav .group input {

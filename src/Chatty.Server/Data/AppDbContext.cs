@@ -17,6 +17,10 @@ public class AppDbContext : IdentityDbContext<User>
         : base(options)
         => this.currentUser = currentUser;
 
+    public DbSet<Chat> Chats { get; init; }
+
+    public DbSet<Message> Messages { get; init; }
+
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
         this.ApplyAuditInformation();
@@ -32,6 +36,36 @@ public class AppDbContext : IdentityDbContext<User>
 
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<Chat>()
+            .HasQueryFilter(c => !c.IsDeleted)
+            .HasMany(c => c.Messages)
+            .WithOne(m => m.Chat)
+            .HasForeignKey(m => m.ChatId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Chat>()
+            .HasMany(c => c.Users)
+            .WithMany(u => u.Chats);
+
+        builder.Entity<Message>()
+            .HasQueryFilter(m => !m.IsDeleted)
+            .HasOne(m => m.Chat)
+            .WithMany(c => c.Messages)
+            .HasForeignKey(m => m.ChatId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Message>()
+            .HasOne(m => m.User)
+            .WithMany(u => u.Messages)
+            .HasForeignKey(m => m.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        base.OnModelCreating(builder);
+    }
+
 
     private void ApplyAuditInformation()
         => this.ChangeTracker
