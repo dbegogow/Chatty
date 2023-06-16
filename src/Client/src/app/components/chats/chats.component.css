@@ -21,6 +21,10 @@
     column-gap: 30px;
 }
 
+.container .nav .group.right {
+    column-gap: 10px;
+}
+
 .container .nav .material-symbols-outlined {
     font-size: 35px;
 }
@@ -35,6 +39,16 @@
     outline: none;
     border: 1px solid #B6B6B6;
     border-radius: 7px;
+}
+
+.container img {
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.container .nav img {
+    width: 35px;
+    height: 35px;
 }
 
 .container .main {
@@ -74,10 +88,8 @@
 }
 
 .container .main .chat-list .chat img {
-    object-fit: contain;
     width: 60px;
     height: 60px;
-    border-radius: 50%;
 }
 
 .container .main .open-chat {
