@@ -2,7 +2,26 @@
     <div class="nav">
         <div class="group">
             <span class="material-symbols-outlined forum">forum</span>
-            <input type="text" placeholder="Search..." />
+            <input type="text" (keyup)="searchChats($event)" placeholder="Search..." />
+            <div [ngClass]="{'chats-bar': true, 'hidden': isChatsBarClosed}">
+                <div *ngIf="isChatsBarLoading; then loader else chatBar"></div>
+                <ng-template #loader>
+                    <app-loader></app-loader>
+                </ng-template>
+                <ng-template #chatBar>
+                    <div class="chat" *ngFor="let chat of chatsBar">
+                        <div *ngIf="chat.profileImageUrl; then profileImage else defaultProfileImage"></div>
+                        <ng-template #profileImage>
+                            <img src={{chat.profileImageUrl}} alt="Chat image">
+                        </ng-template>
+                        <ng-template #defaultProfileImage>
+                            <img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/nesuuhyyzmjip7zg0kg4"
+                                alt="Chat image">
+                        </ng-template>
+                        <span class="chat-name">{{chat.username}}</span>
+                    </div>
+                </ng-template>
+            </div>
         </div>
         <div class="group right">
             <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"

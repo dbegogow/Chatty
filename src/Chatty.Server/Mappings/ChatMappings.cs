@@ -29,7 +29,7 @@ public static class ChatMappings
         => src.Select(cs => new ChatsSearchResponseModel
         {
             ProfileImageUrl = cs.ProfileImageUrl,
-            Usename = cs.Usename
+            Username = cs.Username
         })
         .ToList();
 }

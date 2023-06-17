@@ -51,7 +51,7 @@ public class ChatService : IChatService
                      select new ChatsSearchCoreModel
                      {
                          ProfileImageUrl = u.ProfileImageUrl,
-                         Usename = u.UserName
+                         Username = u.UserName
                      }).AsNoTracking();
 
         var chats = await query.ToListAsync();
