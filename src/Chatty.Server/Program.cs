@@ -8,13 +8,12 @@ builder.Services
     .AddDatabase(configuration)
     .AddIdentity()
     .AddJwtAuthentication(configuration)
+    .AddAuthorization()
     .AddApplicationServices()
     .AddRequestModelsValidators()
     .AddEndpointsApiExplorer()
     .AddCorsPolicy()
-    .AddSwagger()
-    .AddAuthorization()
-    .AddAuthentication();
+    .AddSwagger();
 
 var app = builder.Build();
 
@@ -27,8 +26,8 @@ app
     .UseHttpsRedirection()
     .UseRouting()
     .UseCors()
-    .UseEndpoints()
     .UseAuthentication()
-    .UseAuthorization();
+    .UseAuthorization()
+    .UseEndpoints();
 
 app.Run();

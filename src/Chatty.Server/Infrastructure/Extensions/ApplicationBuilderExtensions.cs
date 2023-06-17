@@ -6,7 +6,8 @@ public static class ApplicationBuilderExtensions
 {
     public static IApplicationBuilder UseEndpoints(this IApplicationBuilder builder)
         => builder
-            .UseAuthEndpoints();
+            .UseAuthEndpoints()
+            .UseChatEndpoints();
 
     public static IApplicationBuilder UseSwaggerUI(this IApplicationBuilder app)
         => app

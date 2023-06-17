@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using FluentValidation;
+using Chatty.Server.Services.Chat;
 
 namespace Chatty.Server.Infrastructure.Extensions;
 
@@ -77,7 +78,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         => services
             .AddScoped<ICurrentUserService, CurrentUserService>()
-            .AddTransient<IIdentityService, IdentityService>();
+            .AddTransient<IIdentityService, IdentityService>()
+            .AddTransient<IChatService, ChatService>();
 
     public static IServiceCollection AddRequestModelsValidators(this IServiceCollection services)
         => services
