@@ -43,4 +43,19 @@ public class ChatService : IChatService
 
         return chat;
     }
+
+    public async Task<IEnumerable<ChatsSearchCoreModel>> Search(string username)
+    {
+        var query = (from u in this._data.Users
+                     where u.UserName.Contains(username)
+                     select new ChatsSearchCoreModel
+                     {
+                         ProfileImageUrl = u.ProfileImageUrl,
+                         Usename = u.UserName
+                     }).AsNoTracking();
+
+        var chats = await query.ToListAsync();
+
+        return chats;
+    }
 }

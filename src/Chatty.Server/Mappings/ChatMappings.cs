@@ -24,4 +24,12 @@ public static class ChatMappings
                 })
             })
         };
+
+    public static IEnumerable<ChatsSearchResponseModel> ToChatsSearchCoreModel(this IEnumerable<ChatsSearchCoreModel> src)
+        => src.Select(cs => new ChatsSearchResponseModel
+        {
+            ProfileImageUrl = cs.ProfileImageUrl,
+            Usename = cs.Usename
+        })
+        .ToList();
 }
