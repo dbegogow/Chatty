@@ -28,10 +28,17 @@ public static class ChatEndpoints
             }).RequireAuthorization();
 
             endpoints.MapGet("api/chats/search", [Authorize(Roles = "User")] async (
+                HttpContext context,
                 IChatService chatService,
-                IValidator<ChatsSearchRequestModel> validator,
-                [FromQuery] ChatsSearchRequestModel model) =>
+                IValidator<ChatsSearchRequestModel> validator) =>
             {
+                var model = new ChatsSearchRequestModel
+                {
+                    Username = context.Request.Query[nameof(ChatsSearchRequestModel.Username)],
+                    Skip = int.Parse(context.Request.Query[nameof(ChatsSearchRequestModel.Skip)]),
+                    Take = int.Parse(context.Request.Query[nameof(ChatsSearchRequestModel.Take)])
+                };
+
                 if (model is null)
                     return Results.BadRequest();
 
