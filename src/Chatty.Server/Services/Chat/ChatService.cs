@@ -44,15 +44,19 @@ public class ChatService : IChatService
         return chat;
     }
 
-    public async Task<IEnumerable<ChatsSearchCoreModel>> Search(string username)
+    public async Task<IEnumerable<ChatsSearchCoreModel>> Search(string username, int skip, int take)
     {
         var query = (from u in this._data.Users
                      where u.UserName.Contains(username)
+                     orderby u.Id
                      select new ChatsSearchCoreModel
                      {
                          ProfileImageUrl = u.ProfileImageUrl,
                          Username = u.UserName
-                     }).AsNoTracking();
+                     })
+                     .Skip(skip)
+                     .Take(take)
+                     .AsNoTracking();
 
         var chats = await query.ToListAsync();
 

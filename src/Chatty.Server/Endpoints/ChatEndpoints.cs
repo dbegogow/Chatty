@@ -35,8 +35,14 @@ public static class ChatEndpoints
                 var model = new ChatsSearchRequestModel
                 {
                     Username = context.Request.Query[nameof(ChatsSearchRequestModel.Username)],
-                    Skip = int.Parse(context.Request.Query[nameof(ChatsSearchRequestModel.Skip)]),
-                    Take = int.Parse(context.Request.Query[nameof(ChatsSearchRequestModel.Take)])
+                    Skip = int.TryParse(
+                            context.Request.Query[nameof(ChatsSearchRequestModel.Skip)],
+                            out int skip)
+                        ? skip : 0,
+                    Take = int.TryParse(
+                            context.Request.Query[nameof(ChatsSearchRequestModel.Take)],
+                            out int take)
+                        ? take : 0
                 };
 
                 if (model is null)
@@ -47,7 +53,9 @@ public static class ChatEndpoints
                 if (!validationResult.IsValid)
                     return Results.ValidationProblem(validationResult.ToDictionary());
 
-                var chats = (await chatService.Search(model.Username)).ToChatsSearchCoreModel();
+                var chats = (await chatService
+                        .Search(model.Username, model.Skip, model.Take))
+                    .ToChatsSearchCoreModel();
 
                 return Results.Ok(chats);
             }).RequireAuthorization();

@@ -8,8 +8,7 @@ public class ChatsSearchRequestModelValidator
     public ChatsSearchRequestModelValidator()
     {
         RuleFor(m => m.Skip)
-            .GreaterThanOrEqualTo(1)
-            .LessThanOrEqualTo(1000);
+            .GreaterThanOrEqualTo(0);
 
         RuleFor(m => m.Take)
             .GreaterThanOrEqualTo(1)
