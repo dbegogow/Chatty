@@ -6,6 +6,7 @@ using Chatty.Server.Infrastructure.Services;
 using Chatty.Server.Models.Request;
 using Chatty.Server.Models.Request.Validators;
 using Chatty.Server.Services.Identity;
+using Chatty.Server.Services.Chat;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +15,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 using FluentValidation;
-using Chatty.Server.Services.Chat;
 
 namespace Chatty.Server.Infrastructure.Extensions;
 
@@ -84,7 +84,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddRequestModelsValidators(this IServiceCollection services)
         => services
             .AddScoped<IValidator<RegisterRequestModel>, RegisterRequestModelValidator>()
-            .AddScoped<IValidator<LoginRequestModel>, LoginRequestModelValidator>();
+            .AddScoped<IValidator<LoginRequestModel>, LoginRequestModelValidator>()
+            .AddScoped<IValidator<ChatsSearchRequestModel>, ChatsSearchRequestModelValidator>();
 
     public static IServiceCollection AddCorsPolicy(this IServiceCollection services)
         => services.AddCors(options =>

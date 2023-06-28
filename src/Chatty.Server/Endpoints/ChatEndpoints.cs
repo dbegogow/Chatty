@@ -1,9 +1,12 @@
 ﻿using Chatty.Server.Infrastructure.Extensions;
 using Chatty.Server.Infrastructure.Services;
 using Chatty.Server.Mappings;
+using Chatty.Server.Models.Request;
 using Chatty.Server.Services.Chat;
 
 using Microsoft.AspNetCore.Authorization;
+
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chatty.Server.Endpoints;
@@ -26,9 +29,18 @@ public static class ChatEndpoints
 
             endpoints.MapGet("api/chats/search", [Authorize(Roles = "User")] async (
                 IChatService chatService,
-                [FromQuery] string username) =>
+                IValidator<ChatsSearchRequestModel> validator,
+                [FromQuery] ChatsSearchRequestModel model) =>
             {
-                var chats = (await chatService.Search(username)).ToChatsSearchCoreModel();
+                if (model is null)
+                    return Results.BadRequest();
+
+                var validationResult = await validator.ValidateAsync(model);
+
+                if (!validationResult.IsValid)
+                    return Results.ValidationProblem(validationResult.ToDictionary());
+
+                var chats = (await chatService.Search(model.Username)).ToChatsSearchCoreModel();
 
                 return Results.Ok(chats);
             }).RequireAuthorization();
