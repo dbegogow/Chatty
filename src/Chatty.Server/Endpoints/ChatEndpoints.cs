@@ -7,7 +7,8 @@ using Chatty.Server.Services.Chat;
 using Microsoft.AspNetCore.Authorization;
 
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
+using Chatty.Server.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Chatty.Server.Endpoints;
 
@@ -29,6 +30,8 @@ public static class ChatEndpoints
 
             endpoints.MapGet("api/chats/search", [Authorize(Roles = "User")] async (
                 HttpContext context,
+                UserManager<User> userManager,
+                ICurrentUserService currentUserService,
                 IChatService chatService,
                 IValidator<ChatsSearchRequestModel> validator) =>
             {
@@ -53,8 +56,14 @@ public static class ChatEndpoints
                 if (!validationResult.IsValid)
                     return Results.ValidationProblem(validationResult.ToDictionary());
 
+                var currentUserId = currentUserService.GetId();
+
                 var chats = (await chatService
-                        .Search(model.Username, model.Skip, model.Take))
+                        .Search(
+                            model.Username,
+                            currentUserId,
+                            model.Skip,
+                            model.Take))
                     .ToChatsSearchCoreModel();
 
                 return Results.Ok(chats);

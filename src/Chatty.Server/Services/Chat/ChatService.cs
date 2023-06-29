@@ -44,10 +44,15 @@ public class ChatService : IChatService
         return chat;
     }
 
-    public async Task<IEnumerable<ChatsSearchCoreModel>> Search(string username, int skip, int take)
+    public async Task<IEnumerable<ChatsSearchCoreModel>> Search(
+        string username,
+        string currentUserId,
+        int skip,
+        int take)
     {
         var query = (from u in this._data.Users
                      where u.UserName.Contains(username)
+                           && u.Id != currentUserId
                      orderby u.Id
                      select new ChatsSearchCoreModel
                      {

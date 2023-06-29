@@ -6,5 +6,9 @@ public interface IChatService
 {
     Task<ChatsCoreModel> All(string userId);
 
-    Task<IEnumerable<ChatsSearchCoreModel>> Search(string username, int skip, int take);
+    Task<IEnumerable<ChatsSearchCoreModel>> Search(
+        string username,
+        string currentUserId,
+        int skip,
+        int take);
 }
