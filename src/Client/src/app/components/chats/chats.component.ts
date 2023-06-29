@@ -14,6 +14,10 @@ export class ChatsComponent implements OnInit {
   isChatsBarClosed: boolean = true;
   isChatsBarLoading: boolean = false;
 
+  searchUsername: string = '';
+  searchSkip: number = 0;
+  searchTake: number = 10;
+  isSearchChatsNotCancelation: boolean = true;
   chatsBar: ChatsSearch[] = [];
 
   constructor(
@@ -24,22 +28,32 @@ export class ChatsComponent implements OnInit {
     this.messagesScrollToBottom();
   }
 
-  searchChats(event: any) {
-    const value = event.target.value;
-
-    if (!value) {
+  searchChats(resetBatch: boolean) {
+    if (!this.searchUsername) {
       this.isChatsBarClosed = true;
       return;
+    }
+
+    if (resetBatch) {
+      this.searchSkip = 0;
+      this.chatsBar = [];
+      this.isSearchChatsNotCancelation = true;
+    } else {
+      this.searchSkip += 10;
     }
 
     this.isChatsBarClosed = false;
     this.isChatsBarLoading = true;
 
-    this.chatService.search(value)
+    this.chatService.search(this.searchUsername, this.searchSkip, this.searchTake)
       .subscribe({
         next: res => {
-          this.chatsBar = res;
-          console.log(this.chatsBar);
+          if (res.length === 0) {
+            this.isSearchChatsNotCancelation = false;
+            return;
+          }
+
+          this.chatsBar = this.chatsBar.concat(res);
         },
         error: () => {
           this.isChatsBarClosed = true;
