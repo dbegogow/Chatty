@@ -1,99 +1,104 @@
 <div class="container">
-    <div class="nav">
-        <div class="group">
-            <span class="material-symbols-outlined forum">forum</span>
-            <input type="text" [(ngModel)]="searchUsername" (keyup)="searchChats(true)" placeholder="Search..." />
-            <div [ngClass]="{'chats-bar': true, 'hidden': isChatsBarClosed}">
-                <div *ngIf="isChatsBarLoading; then loader else chatBar"></div>
-                <ng-template #loader>
-                    <app-loader></app-loader>
-                </ng-template>
-                <ng-template #chatBar>
-                    <div class="chat" *ngFor="let chat of chatsBar; index as i">
-                        <div *ngIf="chat.profileImageUrl; then profileImage else defaultProfileImage"></div>
-                        <ng-template #profileImage>
-                            <img src={{chat.profileImageUrl}} alt="Chat image">
-                        </ng-template>
-                        <ng-template #defaultProfileImage>
-                            <img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/nesuuhyyzmjip7zg0kg4"
-                                alt="Chat image">
-                        </ng-template>
-                        <span class="chat-name" appIsVisible (elementVisible)="searchChats(false)"
-                            [isTargetElement]="isSearchChatsNotCancelation && i === chatsBar.length - 1">
-                            {{chat.username}}
-                        </span>
-                    </div>
-                </ng-template>
-            </div>
-        </div>
-        <div class="group right">
-            <img src="{{chats?.profileImageUrl}}" alt="Profile image">
-            <span class="material-symbols-outlined">add_circle</span>
-        </div>
+    <div *ngIf="chats === null" class="loader-container">
+        <app-loader></app-loader>
     </div>
-    <div class="main">
-        <div class="chat-list">
-            <div class="chat">
-                <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
-                    alt="Chat image">
-                <span class="chat-name">willowRollins</span>
+    <div *ngIf="chats !== null">
+        <div class="nav">
+            <div class="group">
+                <span class="material-symbols-outlined forum">forum</span>
+                <input type="text" [(ngModel)]="searchUsername" (keyup)="searchChats(true)" placeholder="Search..." />
+                <div [ngClass]="{'chats-bar': true, 'hidden': isChatsBarClosed}">
+                    <div *ngIf="isChatsBarLoading; then loader else chatBar"></div>
+                    <ng-template #loader>
+                        <app-loader></app-loader>
+                    </ng-template>
+                    <ng-template #chatBar>
+                        <div class="chat" *ngFor="let chat of chatsBar; index as i">
+                            <div *ngIf="chat.profileImageUrl; then profileImage else defaultProfileImage"></div>
+                            <ng-template #profileImage>
+                                <img src={{chat.profileImageUrl}} alt="Chat image">
+                            </ng-template>
+                            <ng-template #defaultProfileImage>
+                                <img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/nesuuhyyzmjip7zg0kg4"
+                                    alt="Chat image">
+                            </ng-template>
+                            <span class="chat-name" appIsVisible (elementVisible)="searchChats(false)"
+                                [isTargetElement]="isSearchChatsNotCancelation && i === chatsBar.length - 1">
+                                {{chat.username}}
+                            </span>
+                        </div>
+                    </ng-template>
+                </div>
             </div>
-            <div class="chat selected">
-                <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
-                    alt="Chat image">
-                <span class="chat-name">willowRollins</span>
-            </div>
-            <div class="chat">
-                <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
-                    alt="Chat image">
-                <span class="chat-name">willowRollins</span>
-            </div>
-            <div class="chat">
-                <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
-                    alt="Chat image">
-                <span class="chat-name">willowRollins</span>
-            </div>
-            <div class="chat">
-                <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
-                    alt="Chat image">
-                <span class="chat-name">willowRollins</span>
-            </div>
-            <div class="chat">
-                <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
-                    alt="Chat image">
-                <span class="chat-name">willowRollins</span>
+            <div class="group right">
+                <img src="{{chats?.profileImageUrl}}" alt="Profile image">
+                <span class="material-symbols-outlined">add_circle</span>
             </div>
         </div>
-        <div class="open-chat">
-            <div #scrollableMessages class="messages">
-                <span class="message">
-                    Lorem, ipsum dolor.
-                </span>
-                <div class="message">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis voluptatum atque laudantium
-                    dolor delectus, ipsa vero labore voluptatibus fugiat, molestiae ab maxime nesciunt dicta
-                    veritatis quidem!
+        <div class="main">
+            <div class="chat-list">
+                <div class="chat">
+                    <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
+                        alt="Chat image">
+                    <span class="chat-name">willowRollins</span>
                 </div>
-                <div class="message mine">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab facere recusandae aut! Itaque
-                    dignissimos excepturi necessitatibus quidem! Atque nostrum quae vel distinctio, ratione
-                    excepturi facilis? Beatae nihil perspiciatis adipisci blanditiis, commodi iste perferendis
-                    aliquam impedit eligendi alias nobis maxime similique omnis doloremque dicta totam nulla amet
-                    dolores corrupti ad voluptate.
+                <div class="chat selected">
+                    <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
+                        alt="Chat image">
+                    <span class="chat-name">willowRollins</span>
                 </div>
-                <div class="message">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, possimus.
+                <div class="chat">
+                    <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
+                        alt="Chat image">
+                    <span class="chat-name">willowRollins</span>
                 </div>
-                <div class="message mine">
-                    Lorem ipsum dolor sit amet.
+                <div class="chat">
+                    <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
+                        alt="Chat image">
+                    <span class="chat-name">willowRollins</span>
                 </div>
-                <div class="message mine">
-                    Lorem ipsum
+                <div class="chat">
+                    <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
+                        alt="Chat image">
+                    <span class="chat-name">willowRollins</span>
+                </div>
+                <div class="chat">
+                    <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
+                        alt="Chat image">
+                    <span class="chat-name">willowRollins</span>
                 </div>
             </div>
-            <div class="bar">
-                <input type="text" placeholder="Type something here...">
-                <span class="material-symbols-outlined">image</span>
+            <div class="open-chat">
+                <div #scrollableMessages class="messages">
+                    <span class="message">
+                        Lorem, ipsum dolor.
+                    </span>
+                    <div class="message">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis voluptatum atque laudantium
+                        dolor delectus, ipsa vero labore voluptatibus fugiat, molestiae ab maxime nesciunt dicta
+                        veritatis quidem!
+                    </div>
+                    <div class="message mine">
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab facere recusandae aut! Itaque
+                        dignissimos excepturi necessitatibus quidem! Atque nostrum quae vel distinctio, ratione
+                        excepturi facilis? Beatae nihil perspiciatis adipisci blanditiis, commodi iste perferendis
+                        aliquam impedit eligendi alias nobis maxime similique omnis doloremque dicta totam nulla amet
+                        dolores corrupti ad voluptate.
+                    </div>
+                    <div class="message">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, possimus.
+                    </div>
+                    <div class="message mine">
+                        Lorem ipsum dolor sit amet.
+                    </div>
+                    <div class="message mine">
+                        Lorem ipsum
+                    </div>
+                </div>
+                <div class="bar">
+                    <input type="text" placeholder="Type something here...">
+                    <span class="material-symbols-outlined">image</span>
+                </div>
             </div>
         </div>
     </div>

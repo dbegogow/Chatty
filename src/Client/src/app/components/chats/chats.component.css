@@ -194,3 +194,8 @@
 ::-webkit-scrollbar-thumb {
     background-color: #EAEAEA;
 }
+
+.container .loader-container {
+    position: relative;
+    top: 120px;
+}
