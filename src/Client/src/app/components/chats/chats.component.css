@@ -80,6 +80,10 @@
     cursor: pointer;
 }
 
+.container .nav .group .chats-bar .chat:hover {
+    background: #EAEAEA;
+}
+
 .container .main {
     display: flex;
     column-gap: 5px;

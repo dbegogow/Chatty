@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ChatsSearch } from '../models/response/chatsSerach.model';
+import { ChatsSearch } from '../models/response/chats-serach.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({

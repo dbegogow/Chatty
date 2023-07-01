@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ChatService } from '../../services/chat.service';
-import { ChatsSearch } from '../../models/response/chatsSerach.model';
+import { ChatsSearch } from '../../models/response/chats-serach.model';
 
 @Component({
   selector: 'app-chats',
@@ -19,6 +19,8 @@ export class ChatsComponent implements OnInit {
   searchTake: number = 10;
   isSearchChatsNotCancelation: boolean = true;
   chatsBar: ChatsSearch[] = [];
+
+  chats: 
 
   constructor(
     private toastr: ToastrService,
