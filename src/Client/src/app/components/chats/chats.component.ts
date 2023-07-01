@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ChatService } from '../../services/chat.service';
 import { ChatsSearch } from '../../models/response/chats-serach.model';
+import { Chats } from 'src/app/models/response/chats.model';
 
 @Component({
   selector: 'app-chats',
@@ -20,13 +21,14 @@ export class ChatsComponent implements OnInit {
   isSearchChatsNotCancelation: boolean = true;
   chatsBar: ChatsSearch[] = [];
 
-  chats: 
+  chats: Chats | null = null;
 
   constructor(
     private toastr: ToastrService,
     private chatService: ChatService) { }
 
   ngOnInit() {
+    this.allChats();
     this.messagesScrollToBottom();
   }
 
@@ -69,5 +71,20 @@ export class ChatsComponent implements OnInit {
   messagesScrollToBottom() {
     const scrollableElement = this.scrollableElementRef.nativeElement;
     scrollableElement.scrollTop = scrollableElement.scrollHeight;
+  }
+
+  allChats() {
+    this.chatService.chats()
+      .subscribe({
+        next: res => {
+          this.chats = res;
+        },
+        error: () => {
+          // this.isChatsBarClosed = true;
+          // this.toastr.error('Error occured');
+        },
+      }).add(() => {
+        
+      });
   }
 }
