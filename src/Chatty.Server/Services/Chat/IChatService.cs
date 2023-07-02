@@ -4,7 +4,7 @@ namespace Chatty.Server.Services.Chat;
 
 public interface IChatService
 {
-    Task<bool> All(string userId);
+    Task<IEnumerable<ChatCoreModel>> All(string userId);
 
     Task<IEnumerable<ChatsSearchCoreModel>> Search(
         string username,

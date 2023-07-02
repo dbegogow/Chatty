@@ -31,7 +31,7 @@ export class ChatsComponent implements OnInit {
     private chatService: ChatService) { }
 
   ngOnInit() {
-    this.allChats();
+    // this.allChats();
   }
 
   searchChats(resetBatch: boolean) {

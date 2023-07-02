@@ -23,7 +23,7 @@ public static class ChatEndpoints
             {
                 var userId = currentUserService.GetId();
 
-                var chats = (await chatService.All(userId));
+                var chats = (await chatService.All(userId)).ToChatsResponseModel();
 
                 return Results.Ok(chats);
             }).RequireAuthorization();

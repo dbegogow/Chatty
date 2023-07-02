@@ -12,9 +12,35 @@ public class ChatService : IChatService
     public ChatService(AppDbContext data)
         => this._data = data;
 
-    public async Task<bool> All(string userId)
+    public async Task<IEnumerable<ChatCoreModel>> All(string userId)
     {
-        return await Task.FromResult(true);
+        var query = (from u in this._data.Users
+                     join rm in this._data.Messages on u.Id equals rm.ReceiverUserId
+                     join su in this._data.Users on rm.SenderUserId equals su.Id
+                     join sm in this._data.Messages on u.Id equals sm.SenderUserId
+                     join ru in this._data.Users on sm.ReceiverUserId equals ru.Id
+                     where u.Id == userId
+                     select new ChatCoreModel
+                     {
+                         SenderProfileImageUrl = su.ProfileImageUrl,
+                         ReceiverProfileImageUrl = ru.ProfileImageUrl,
+                         SenderUsername = su.UserName,
+                         ReceiverUsername = ru.UserName
+                     }
+                    ).AsNoTracking();
+
+        var chats = await query
+            .GroupBy(c => new
+            {
+                c.SenderProfileImageUrl,
+                c.ReceiverProfileImageUrl,
+                c.SenderUsername,
+                c.ReceiverUsername
+            })
+            .Select(g => g.First())
+            .ToListAsync();
+
+        return chats;
     }
 
     public async Task<IEnumerable<ChatsSearchCoreModel>> Search(

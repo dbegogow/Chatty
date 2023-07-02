@@ -1,8 +1,8 @@
 <div class="container">
-    <div *ngIf="chats === null" class="loader-container">
+    <!-- <div *ngIf="chats === null" class="loader-container">
         <app-loader></app-loader>
-    </div>
-    <div *ngIf="chats !== null">
+    </div> -->
+    <div *ngIf="chats === null">
         <div class="nav">
             <div class="group">
                 <span class="material-symbols-outlined forum">forum</span>
@@ -32,17 +32,17 @@
                 </div>
             </div>
             <div class="group right">
-                <img src={{chats.profileImageUrl}} alt="Profile image">
+                <img src="" alt="Profile image">
                 <span class="material-symbols-outlined">add_circle</span>
             </div>
         </div>
         <div class="main">
             <div class="chat-list">
-                <div [ngClass]="{'chat': true, 'selected': chat.users[0].username === openedChat.users[0].username}"
+                <!-- <div [ngClass]="{'chat': true, 'selected': chat.users[0].username === openedChat.users[0].username}"
                     *ngFor="let chat of chats.chats">
                     <img src={{chat.users[0].profileImageUrl}} alt="Chat image">
                     <span class="chat-name">{{chat.users[0].username}}</span>
-                </div>
+                </div> -->
                 <!-- <div class="chat selected">
                     <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
                         alt="Chat image">
@@ -71,9 +71,9 @@
             </div>
             <div class="open-chat" *ngIf="openedChat">
                 <div #scrollableMessages class="messages">
-                    <span [ngClass]="{'message': true, 'mine': openedChat.}">
+                    <!-- <span [ngClass]="{'message': true, 'mine': message.authorUsername === }" *ngFor="let message of openedChat.messages">
                         Lorem, ipsum dolor.
-                    </span>
+                    </span> -->
                     <div class="message">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis voluptatum atque laudantium
                         dolor delectus, ipsa vero labore voluptatibus fugiat, molestiae ab maxime nesciunt dicta
