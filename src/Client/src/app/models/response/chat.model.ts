@@ -2,7 +2,7 @@ import { ChatUser } from "./chat-user.model";
 import { Message } from "./message.model";
 
 export interface Chat {
-    id: string;
+    id?: string;
     users: ChatUser[];
     messages: Message[];
 }

@@ -3,6 +3,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ChatService } from '../../services/chat.service';
 import { ChatsSearch } from '../../models/response/chats-serach.model';
 import { Chats } from 'src/app/models/response/chats.model';
+import { Chat } from 'src/app/models/response/chat.model';
+import { ChatUser } from 'src/app/models/response/chat-user.model';
 
 @Component({
   selector: 'app-chats',
@@ -22,6 +24,7 @@ export class ChatsComponent implements OnInit {
   chatsBar: ChatsSearch[] = [];
 
   chats: Chats | null = null;
+  openedChat!: Chat;
 
   constructor(
     private toastr: ToastrService,
@@ -29,7 +32,6 @@ export class ChatsComponent implements OnInit {
 
   ngOnInit() {
     this.allChats();
-    this.messagesScrollToBottom();
   }
 
   searchChats(resetBatch: boolean) {
@@ -68,23 +70,46 @@ export class ChatsComponent implements OnInit {
       });
   }
 
-  messagesScrollToBottom() {
-    const scrollableElement = this.scrollableElementRef.nativeElement;
-    scrollableElement.scrollTop = scrollableElement.scrollHeight;
-  }
-
   allChats() {
     this.chatService.chats()
       .subscribe({
         next: res => {
           this.chats = res;
+
+          if (this.chats.chats.length > 0) {
+            this.messagesScrollToBottom();
+          }
         },
         error: () => {
-          // this.isChatsBarClosed = true;
-          // this.toastr.error('Error occured');
+          this.toastr.error('Error occured');
         },
-      }).add(() => {
-        
       });
+  }
+
+  openChat(username: string, profileImageUrl: string) {
+    const chat = this.chats?.chats
+      .find(c => c.users
+        .some(u => u.username === username));
+
+    if (chat) {
+      this.openedChat = chat;
+    } else {
+      const chatUsers: ChatUser[] = [
+        {
+          profileImageUrl: profileImageUrl,
+          username: username
+        }
+      ]
+
+      this.openedChat = {
+        users: chatUsers,
+        messages: []
+      }
+    }
+  }
+
+  messagesScrollToBottom() {
+    const scrollableElement = this.scrollableElementRef.nativeElement;
+    scrollableElement.scrollTop = scrollableElement.scrollHeight;
   }
 }
