@@ -14,7 +14,7 @@
                     </ng-template>
                     <ng-template #chatBar>
                         <div class="chat" *ngFor="let chat of chatsBar; index as i"
-                            (click)="openChat(chat.username, chat.profileImageUrl || 'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/nesuuhyyzmjip7zg0kg4')">
+                            (click)="openChat(chat.username, chat.profileImageUrl || 'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/nesuuhyyzmjip7zg0kg4', true)">
                             <div *ngIf="chat.profileImageUrl; then profileImage else defaultProfileImage"></div>
                             <ng-template #profileImage>
                                 <img src={{chat.profileImageUrl}} alt="Chat image">
@@ -38,20 +38,15 @@
         </div>
         <div class="main">
             <div class="chat-list">
-                <div class="chat">
-                    <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
-                        alt="Chat image">
-                    <span class="chat-name">willowRollins</span>
+                <div [ngClass]="{'chat': true, 'selected': chat.users[0].username === openedChat.users[0].username}"
+                    *ngFor="let chat of chats.chats">
+                    <img src={{chat.users[0].profileImageUrl}} alt="Chat image">
+                    <span class="chat-name">{{chat.users[0].username}}</span>
                 </div>
-                <div class="chat selected">
+                <!-- <div class="chat selected">
                     <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
                         alt="Chat image">
-                    <span class="chat-name">willowRollins</span>
-                </div>
-                <div class="chat">
-                    <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
-                        alt="Chat image">
-                    <span class="chat-name">willowRollins</span>
+                    <span class="chat-name">willowRollinsadlaskdsadslkdj</span>
                 </div>
                 <div class="chat">
                     <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
@@ -68,10 +63,15 @@
                         alt="Chat image">
                     <span class="chat-name">willowRollins</span>
                 </div>
+                <div class="chat">
+                    <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
+                        alt="Chat image">
+                    <span class="chat-name">willowRollins</span>
+                </div> -->
             </div>
-            <div class="open-chat">
+            <div class="open-chat" *ngIf="openedChat">
                 <div #scrollableMessages class="messages">
-                    <span class="message">
+                    <span [ngClass]="{'message': true, 'mine': openedChat.}">
                         Lorem, ipsum dolor.
                     </span>
                     <div class="message">

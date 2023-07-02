@@ -6,7 +6,7 @@ public class User : IdentityUser
 {
     public string ProfileImageUrl { get; set; }
 
-    public ICollection<Chat> Chats { get; init; } = new HashSet<Chat>();
+    public ICollection<Message> SendedMessages { get; init; } = new HashSet<Message>();
 
-    public ICollection<Message> Messages { get; init; } = new HashSet<Message>();
+    public ICollection<Message> ReceivedMessages { get; init; } = new HashSet<Message>();
 }

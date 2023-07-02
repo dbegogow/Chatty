@@ -86,7 +86,11 @@ export class ChatsComponent implements OnInit {
       });
   }
 
-  openChat(username: string, profileImageUrl: string) {
+  openChat(username: string, profileImageUrl: string, closeSearchBar: boolean) {
+    if (closeSearchBar) {
+      this.isChatsBarClosed = true;
+    }
+
     const chat = this.chats?.chats
       .find(c => c.users
         .some(u => u.username === username));
@@ -99,12 +103,15 @@ export class ChatsComponent implements OnInit {
           profileImageUrl: profileImageUrl,
           username: username
         }
-      ]
+      ];
 
-      this.openedChat = {
+      const newChat = {
         users: chatUsers,
         messages: []
-      }
+      };
+
+      this.openedChat = newChat;
+      this.chats?.chats.unshift(newChat);
     }
   }
 

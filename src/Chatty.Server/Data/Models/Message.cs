@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 using Chatty.Server.Data.Models.Base;
 
 using static Chatty.Server.Data.Validation;
@@ -14,13 +14,14 @@ public class Message : DeletableEntity
     [MaxLength(ChatMessageMaxLength)]
     public string Text { get; set; }
 
+    public string SenderUserId { get; set; }
+
+    [ForeignKey("SenderUserId")]
+    public User SenderUser { get; set; }
+
     [Required]
-    public string UserId { get; set; }
+    public string ReceiverUserId { get; set; }
 
-    public User User { get; set; }
-
-    [Required]
-    public string ChatId { get; set; }
-
-    public Chat Chat { get; set; }
+    [ForeignKey("ReceiverUserId")]
+    public User ReceiverUser { get; set; }
 }

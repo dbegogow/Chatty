@@ -110,6 +110,10 @@
     font-size: 15px;
 }
 
+.container .main .chat-list .chat .chat-name {
+    word-break: break-all;
+}
+
 .container .main .chat-list .chat:hover {
     cursor: pointer;
     border: 1px solid #8D8D8D;
