@@ -1,4 +1,5 @@
-﻿using Chatty.Server.Models.Core;
+﻿using Chatty.Server.Models;
+using Chatty.Server.Models.Core;
 
 namespace Chatty.Server.Services.Chat;
 
@@ -11,4 +12,6 @@ public interface IChatService
         string currentUserId,
         int skip,
         int take);
+
+    Task<Result<bool>> SaveMessage(string text, string senderUserId, string receiverUserUsername);
 }

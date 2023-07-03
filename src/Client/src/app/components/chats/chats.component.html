@@ -1,8 +1,8 @@
 <div class="container">
-    <!-- <div *ngIf="chats === null" class="loader-container">
+    <div *ngIf="isChatsLoading" class="loader-container">
         <app-loader></app-loader>
-    </div> -->
-    <div *ngIf="chats === null">
+    </div>
+    <div *ngIf="!isChatsLoading">
         <div class="nav">
             <div class="group">
                 <span class="material-symbols-outlined forum">forum</span>
@@ -38,11 +38,11 @@
         </div>
         <div class="main">
             <div class="chat-list">
-                <!-- <div [ngClass]="{'chat': true, 'selected': chat.users[0].username === openedChat.users[0].username}"
-                    *ngFor="let chat of chats.chats">
-                    <img src={{chat.users[0].profileImageUrl}} alt="Chat image">
-                    <span class="chat-name">{{chat.users[0].username}}</span>
-                </div> -->
+                <div [ngClass]="{'chat': true, 'selected': openedChat.username === chat.username}"
+                    *ngFor="let chat of chats">
+                    <img src={{chat.profileImageUrl}} alt="Chat image">
+                    <span class="chat-name">{{chat.username}}</span>
+                </div>
                 <!-- <div class="chat selected">
                     <img src="https://marketplace.canva.com/EAFEits4-uw/1/0/400w/canva-boy-cartoon-gamer-animated-twitch-profile-photo-Pk-dGK9pdQg.jpg"
                         alt="Chat image">

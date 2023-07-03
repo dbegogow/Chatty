@@ -2,9 +2,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ChatService } from '../../services/chat.service';
 import { ChatsSearch } from '../../models/response/chats-serach.model';
-import { Chats } from 'src/app/models/response/chats.model';
-import { Chat } from 'src/app/models/response/chat.model';
-import { ChatUser } from 'src/app/models/response/chat-user.model';
 
 @Component({
   selector: 'app-chats',
@@ -23,15 +20,16 @@ export class ChatsComponent implements OnInit {
   isSearchChatsNotCancelation: boolean = true;
   chatsBar: ChatsSearch[] = [];
 
-  chats: Chats | null = null;
-  openedChat!: Chat;
+  chats: ChatsSearch[] = [];
+  openedChat!: ChatsSearch;
+  isChatsLoading: boolean = false;
 
   constructor(
     private toastr: ToastrService,
     private chatService: ChatService) { }
 
   ngOnInit() {
-    // this.allChats();
+    this.allChats();
   }
 
   searchChats(resetBatch: boolean) {
@@ -71,18 +69,22 @@ export class ChatsComponent implements OnInit {
   }
 
   allChats() {
+    this.isChatsLoading = true;
+
     this.chatService.chats()
       .subscribe({
         next: res => {
           this.chats = res;
 
-          if (this.chats.chats.length > 0) {
+          if (this.chats.length > 0) {
             this.messagesScrollToBottom();
           }
         },
         error: () => {
           this.toastr.error('Error occured');
         },
+      }).add(() => {
+        this.isChatsLoading = false;
       });
   }
 
@@ -91,27 +93,18 @@ export class ChatsComponent implements OnInit {
       this.isChatsBarClosed = true;
     }
 
-    const chat = this.chats?.chats
-      .find(c => c.users
-        .some(u => u.username === username));
+    const chat = this.chats.find(c => c.username === username);
 
     if (chat) {
       this.openedChat = chat;
     } else {
-      const chatUsers: ChatUser[] = [
-        {
-          profileImageUrl: profileImageUrl,
-          username: username
-        }
-      ];
-
-      const newChat = {
-        users: chatUsers,
-        messages: []
+      const newChat: ChatsSearch = {
+        profileImageUrl: profileImageUrl,
+        username: username
       };
 
       this.openedChat = newChat;
-      this.chats?.chats.unshift(newChat);
+      this.chats.unshift(newChat);
     }
   }
 

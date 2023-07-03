@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ChatsSearch } from '../models/response/chats-serach.model';
 import { environment } from '../../environments/environment';
-import { Chats } from '../models/response/chats.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +10,8 @@ import { Chats } from '../models/response/chats.model';
 export class ChatService {
   constructor(private http: HttpClient) { }
 
-  chats(): Observable<Chats> {
-    return this.http.get<Chats>(
+  chats(): Observable<ChatsSearch[]> {
+    return this.http.get<ChatsSearch[]>(
       `${environment.apiUrl}/api/chats`);
   }
 
