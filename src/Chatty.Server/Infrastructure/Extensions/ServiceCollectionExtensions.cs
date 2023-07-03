@@ -85,7 +85,8 @@ public static class ServiceCollectionExtensions
         => services
             .AddScoped<IValidator<RegisterRequestModel>, RegisterRequestModelValidator>()
             .AddScoped<IValidator<LoginRequestModel>, LoginRequestModelValidator>()
-            .AddScoped<IValidator<ChatsSearchRequestModel>, ChatsSearchRequestModelValidator>();
+            .AddScoped<IValidator<ChatsSearchRequestModel>, ChatsSearchRequestModelValidator>()
+            .AddScoped<IValidator<MessageRequestModel>, MessageRequestModelValidator>();
 
     public static IServiceCollection AddCorsPolicy(this IServiceCollection services)
         => services.AddCors(options =>

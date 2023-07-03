@@ -30,7 +30,6 @@ public static class ChatEndpoints
 
             endpoints.MapGet("api/chats/search", [Authorize(Roles = "User")] async (
                 HttpContext context,
-                UserManager<User> userManager,
                 ICurrentUserService currentUserService,
                 IChatService chatService,
                 IValidator<ChatsSearchRequestModel> validator) =>
@@ -67,6 +66,34 @@ public static class ChatEndpoints
                     .ToChatsSearchCoreModel();
 
                 return Results.Ok(chats);
+            }).RequireAuthorization();
+
+            endpoints.MapPost("api/chat/send-message", [Authorize(Roles = "User")] async (
+                HttpContext context,
+                ICurrentUserService currentUserService,
+                IChatService chatService,
+                IValidator<MessageRequestModel> validator,
+                MessageRequestModel model) =>
+            {
+                if (model is null)
+                    return Results.BadRequest();
+
+                var validationResult = await validator.ValidateAsync(model);
+
+                if (!validationResult.IsValid)
+                    return Results.ValidationProblem(validationResult.ToDictionary());
+
+                var currentUserId = currentUserService.GetId();
+
+                var result = await chatService.SaveMessage(
+                    model.Text, currentUserId, model.ReceiverUsername);
+
+                if (result.Failure)
+                {
+                    return Results.BadRequest(result.Errors);
+                }
+
+                return Results.Ok();
             }).RequireAuthorization();
         });
 }
