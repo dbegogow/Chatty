@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <div class="bar">
-                    <input type="text" placeholder="Type something here...">
+                    <input type="text" [(ngModel)]="messageText" (keyup.enter)="sendMessage()" placeholder="Type something here...">
                     <span class="material-symbols-outlined">image</span>
                 </div>
             </div>

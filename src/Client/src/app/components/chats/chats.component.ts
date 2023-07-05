@@ -25,6 +25,8 @@ export class ChatsComponent implements OnInit {
   openedChat!: ChatsSearch;
   isChatsLoading: boolean = false;
 
+  messageText: string = '';
+
   constructor(
     private toastr: ToastrService,
     private chatService: ChatService) { }
@@ -87,14 +89,21 @@ export class ChatsComponent implements OnInit {
       });
   }
 
-  snedMessage(text: string) {
+  sendMessage() {
+    if (!this.messageText) {
+      return;
+    }
+
     const message: MessageModel = {
       receiverUsername: this.openedChat?.username,
-      text: text
+      text: this.messageText
     };
 
     this.chatService.sendMessage(message)
       .subscribe({
+        next: () => {
+          this.messageText = '';
+        },
         error: () => {
           this.toastr.error('Error occured');
         },
