@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ChatService } from '../../services/chat.service';
 import { ChatsSearch } from '../../models/response/chats-serach.model';
+import { MessageModel } from 'src/app/models/request/message.model';
 
 @Component({
   selector: 'app-chats',
@@ -76,15 +77,27 @@ export class ChatsComponent implements OnInit {
         next: res => {
           this.chats = res;
 
-          if (this.chats.length > 0) {
-            this.messagesScrollToBottom();
-          }
+
         },
         error: () => {
           this.toastr.error('Error occured');
         },
       }).add(() => {
         this.isChatsLoading = false;
+      });
+  }
+
+  snedMessage(text: string) {
+    const message: MessageModel = {
+      receiverUsername: this.openedChat?.username,
+      text: text
+    };
+
+    this.chatService.sendMessage(message)
+      .subscribe({
+        error: () => {
+          this.toastr.error('Error occured');
+        },
       });
   }
 
