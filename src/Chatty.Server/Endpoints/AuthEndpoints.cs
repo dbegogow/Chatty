@@ -87,9 +87,10 @@ public static class AuthEndpoints
                     user.Email,
                     role);
 
-                return Results.Ok(new IdentityResponseModel
+                return Results.Ok(new LoginResponseModel
                 {
-                    Token = token
+                    Token = token,
+                    ProfileImageUrl = user.ProfileImageUrl
                 });
             });
         });
