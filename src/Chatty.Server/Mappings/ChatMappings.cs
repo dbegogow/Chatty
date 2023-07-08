@@ -8,13 +8,10 @@ public static class ChatMappings
     public static IEnumerable<ChatResponseModel> ToChatsResponseModel(this IEnumerable<ChatCoreModel> src)
         => src.Select(c => new ChatResponseModel
         {
-            ProfileImageUrl = c.SenderProfileImageUrl,
-            Username = c.SenderUsername
-        }).Concat(src.Select(c => new ChatResponseModel
-        {
-            ProfileImageUrl = c.ReceiverProfileImageUrl,
-            Username = c.ReceiverUsername
-        }));
+            Username = c.Username,
+            ProfileImageUrl = c.ProfileImageUrl
+        })
+        .ToList();
 
     public static IEnumerable<ChatsSearchResponseModel> ToChatsSearchCoreModel(this IEnumerable<ChatsSearchCoreModel> src)
         => src.Select(cs => new ChatsSearchResponseModel

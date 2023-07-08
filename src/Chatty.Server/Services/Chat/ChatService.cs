@@ -19,30 +19,30 @@ public class ChatService : IChatService
     public async Task<IEnumerable<ChatCoreModel>> All(string userId)
     {
         var query = (from u in this._data.Users
-                     join rm in this._data.Messages on u.Id equals rm.ReceiverUserId
-                     join su in this._data.Users on rm.SenderUserId equals su.Id
-                     join sm in this._data.Messages on u.Id equals sm.SenderUserId
-                     join ru in this._data.Users on sm.ReceiverUserId equals ru.Id
+                     join m in this._data.Messages on u.Id equals m.SenderUserId
+                     join ru in this._data.Users on m.ReceiverUserId equals ru.Id
                      where u.Id == userId
                      select new ChatCoreModel
                      {
-                         SenderProfileImageUrl = su.ProfileImageUrl,
-                         ReceiverProfileImageUrl = ru.ProfileImageUrl,
-                         SenderUsername = su.UserName,
-                         ReceiverUsername = ru.UserName
+                         Username = ru.UserName,
+                         ProfileImageUrl = ru.ProfileImageUrl
                      }
-                    ).AsNoTracking();
+                    )
+                    .Concat
+                    (from u in this._data.Users
+                     join m in this._data.Messages on u.Id equals m.ReceiverUserId
+                     join su in this._data.Users on m.SenderUserId equals su.Id
+                     where u.Id == userId
+                     select new ChatCoreModel
+                     {
+                         Username = su.UserName,
+                         ProfileImageUrl = su.ProfileImageUrl
+                     }
+                    )
+                    .Distinct()
+                    .AsNoTracking();
 
-        var chats = await query
-            .GroupBy(c => new
-            {
-                c.SenderProfileImageUrl,
-                c.ReceiverProfileImageUrl,
-                c.SenderUsername,
-                c.ReceiverUsername
-            })
-            .Select(g => g.First())
-            .ToListAsync();
+        var chats = await query.ToListAsync();
 
         return chats;
     }
