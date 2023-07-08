@@ -1,4 +1,4 @@
-export interface ChatsSearch {
+export interface ChatModel {
     profileImageUrl: string;
     username: string;
 }

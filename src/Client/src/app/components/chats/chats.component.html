@@ -14,7 +14,7 @@
                     </ng-template>
                     <ng-template #chatBar>
                         <div class="chat" *ngFor="let chat of chatsBar; index as i"
-                            (click)="openChat(chat.username, chat.profileImageUrl || 'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/nesuuhyyzmjip7zg0kg4', true)">
+                            (click)="openChat(chat.username, true, chat.profileImageUrl || 'https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/nesuuhyyzmjip7zg0kg4')">
                             <div *ngIf="chat.profileImageUrl; then profileImage else defaultProfileImage"></div>
                             <ng-template #profileImage>
                                 <img src={{chat.profileImageUrl}} alt="Chat image">
@@ -32,15 +32,22 @@
                 </div>
             </div>
             <div class="group right">
-                <img src="" alt="Profile image">
+                <img src={{profileImageUrl}} alt="Profile image">
                 <span class="material-symbols-outlined">add_circle</span>
             </div>
         </div>
         <div class="main">
             <div class="chat-list">
-                <div [ngClass]="{'chat': true, 'selected': openedChat.username === chat.username}"
-                    *ngFor="let chat of chats">
-                    <img src={{chat.profileImageUrl}} alt="Chat image">
+                <div [ngClass]="{'chat': true, 'selected': openedChat?.username === chat.username}"
+                    *ngFor="let chat of chats" (click)="openChat(chat.username)">
+                    <div *ngIf="chat.profileImageUrl; then profileImage else defaultProfileImage"></div>
+                    <ng-template #profileImage>
+                        <img src={{chat.profileImageUrl}} alt="Chat image">
+                    </ng-template>
+                    <ng-template #defaultProfileImage>
+                        <img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,f_auto,q_auto:eco,dpr_1/nesuuhyyzmjip7zg0kg4"
+                            alt="Chat image">
+                    </ng-template>
                     <span class="chat-name">{{chat.username}}</span>
                 </div>
                 <!-- <div class="chat selected">
@@ -97,7 +104,8 @@
                     </div>
                 </div>
                 <div class="bar">
-                    <input type="text" [(ngModel)]="messageText" (keyup.enter)="sendMessage()" placeholder="Type something here...">
+                    <input type="text" [(ngModel)]="messageText" (keyup.enter)="sendMessage()"
+                        placeholder="Type something here...">
                     <span class="material-symbols-outlined">image</span>
                 </div>
             </div>

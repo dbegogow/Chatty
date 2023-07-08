@@ -93,6 +93,7 @@ export class AuthComponent {
           this.toastr.success('Login successfully');
 
           this.authService.saveToken(res.token);
+          this.authService.saveProfileImageUrl(res.profileImageUrl);
 
           this.router.navigate(['chats']);
         },

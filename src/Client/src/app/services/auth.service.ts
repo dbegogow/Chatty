@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { RegisterModel } from '../models/request/register.model';
 import { LoginModel } from '../models/request/login.model';
 import { IdentityModel } from '../models/response/identity.model';
+import { IdentityLoginModel } from '../models/response/identity-login.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,8 @@ export class AuthService {
     return this.http.post<IdentityModel>(`${environment.apiUrl}/api/register`, model);
   }
 
-  login(model: LoginModel): Observable<IdentityModel> {
-    return this.http.post<IdentityModel>(`${environment.apiUrl}/api/login`, model);
+  login(model: LoginModel): Observable<IdentityLoginModel> {
+    return this.http.post<IdentityLoginModel>(`${environment.apiUrl}/api/login`, model);
   }
 
   saveToken(token: string) {
@@ -39,5 +40,13 @@ export class AuthService {
       : false;
 
     return isTokenValid;
+  }
+
+  saveProfileImageUrl(profileImageUrl: string) {
+    localStorage.setItem('profile_image_url', profileImageUrl);
+  }
+
+  getProfileImageUrl() {
+    return localStorage.getItem('profile_image_url');
   }
 }

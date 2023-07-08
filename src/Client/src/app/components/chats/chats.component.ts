@@ -1,8 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ChatService } from '../../services/chat.service';
-import { ChatsSearch } from '../../models/response/chats-serach.model';
+import { ChatModel } from '../../models/response/chat.model';
 import { MessageModel } from 'src/app/models/request/message.model';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-chats',
@@ -19,19 +20,23 @@ export class ChatsComponent implements OnInit {
   searchSkip: number = 0;
   searchTake: number = 10;
   isSearchChatsNotCancelation: boolean = true;
-  chatsBar: ChatsSearch[] = [];
+  chatsBar: ChatModel[] = [];
 
-  chats: ChatsSearch[] = [];
-  openedChat!: ChatsSearch;
+  chats: ChatModel[] = [];
+  openedChat: ChatModel | null = null;
   isChatsLoading: boolean = false;
 
   messageText: string = '';
 
+  profileImageUrl!: string | null;
+
   constructor(
     private toastr: ToastrService,
-    private chatService: ChatService) { }
+    private chatService: ChatService,
+    private authService: AuthService) { }
 
   ngOnInit() {
+    this.profileImageUrl = this.authService.getProfileImageUrl();
     this.allChats();
   }
 
@@ -78,8 +83,6 @@ export class ChatsComponent implements OnInit {
       .subscribe({
         next: res => {
           this.chats = res;
-
-
         },
         error: () => {
           this.toastr.error('Error occured');
@@ -90,7 +93,7 @@ export class ChatsComponent implements OnInit {
   }
 
   sendMessage() {
-    if (!this.messageText) {
+    if (!this.messageText || !this.openedChat) {
       return;
     }
 
@@ -110,7 +113,7 @@ export class ChatsComponent implements OnInit {
       });
   }
 
-  openChat(username: string, profileImageUrl: string, closeSearchBar: boolean) {
+  openChat(username: string, closeSearchBar: boolean = false, profileImageUrl: string = '') {
     if (closeSearchBar) {
       this.isChatsBarClosed = true;
     }
@@ -120,7 +123,7 @@ export class ChatsComponent implements OnInit {
     if (chat) {
       this.openedChat = chat;
     } else {
-      const newChat: ChatsSearch = {
+      const newChat: ChatModel = {
         profileImageUrl: profileImageUrl,
         username: username
       };

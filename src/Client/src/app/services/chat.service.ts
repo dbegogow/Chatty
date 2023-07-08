@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ChatsSearch } from '../models/response/chats-serach.model';
+import { ChatModel } from '../models/response/chat.model';
 import { environment } from '../../environments/environment';
 import { MessageModel } from '../models/request/message.model';
 
@@ -11,13 +11,13 @@ import { MessageModel } from '../models/request/message.model';
 export class ChatService {
   constructor(private http: HttpClient) { }
 
-  chats(): Observable<ChatsSearch[]> {
-    return this.http.get<ChatsSearch[]>(
+  chats(): Observable<ChatModel[]> {
+    return this.http.get<ChatModel[]>(
       `${environment.apiUrl}/api/chats`);
   }
 
-  search(username: string, skip: number, take: number): Observable<ChatsSearch[]> {
-    return this.http.get<ChatsSearch[]>(
+  search(username: string, skip: number, take: number): Observable<ChatModel[]> {
+    return this.http.get<ChatModel[]>(
       `${environment.apiUrl}/api/chats/search?username=${username}&skip=${skip}&take=${take}`);
   }
 
